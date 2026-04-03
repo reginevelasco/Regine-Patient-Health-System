@@ -1,0 +1,85 @@
+erDiagram
+
+PATIENTS {
+    int patient_id PK
+    string first_name
+    string last_name
+    date date_of_birth
+    string gender
+    string contact_number
+    string email
+    string address
+    string blood_type
+    datetime created_at
+}
+
+DOCTORS {
+    int doctor_id PK
+    string first_name
+    string last_name
+    string specialization
+    string contact_number
+    string email
+    int department_id FK
+}
+
+DEPARTMENTS {
+    int department_id PK
+    string department_name
+    string description
+}
+
+APPOINTMENTS {
+    int appointment_id PK
+    int patient_id FK
+    int doctor_id FK
+    datetime appointment_date
+    string status
+    string reason
+}
+
+MEDICAL_RECORDS {
+    int record_id PK
+    int patient_id FK
+    int doctor_id FK
+    string diagnosis
+    string treatment
+    string notes
+    datetime record_date
+}
+
+PRESCRIPTIONS {
+    int prescription_id PK
+    int record_id FK
+    string medication_name
+    string dosage
+    string frequency
+    string duration
+}
+
+BILLING {
+    int bill_id PK
+    int patient_id FK
+    int appointment_id FK
+    decimal total_amount
+    string payment_status
+    datetime payment_date
+}
+
+USERS {
+    int user_id PK
+    string username
+    string password
+    string role
+    int doctor_id FK
+}
+
+PATIENTS ||--o{ APPOINTMENTS : books
+DOCTORS ||--o{ APPOINTMENTS : attends
+DEPARTMENTS ||--o{ DOCTORS : has
+PATIENTS ||--o{ MEDICAL_RECORDS : owns
+DOCTORS ||--o{ MEDICAL_RECORDS : writes
+MEDICAL_RECORDS ||--o{ PRESCRIPTIONS : includes
+APPOINTMENTS ||--|| BILLING : generates
+PATIENTS ||--o{ BILLING : pays
+DOCTORS ||--o{ USERS : linked
